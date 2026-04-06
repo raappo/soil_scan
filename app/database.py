@@ -6,7 +6,6 @@ DB_NAME = "soil_scan.db"
 def init_db():
     conn = sqlite3.connect(DB_NAME)
     cursor = conn.cursor()
-    # Create a table to store every analysis
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS scans (
             id INTEGER PRIMARY KEY AUTOINCREMENT,

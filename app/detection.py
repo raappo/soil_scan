@@ -11,17 +11,17 @@ def detect_microplastics(image_path, result_folder):
     clean_img = cv2.medianBlur(image, 5)
     hsv = cv2.cvtColor(clean_img, cv2.COLOR_BGR2HSV)
     
-    # 2. Optimized Blue Mask
+    # 2. Optimized Blue Mask (Targeting UV Glow)
     lower_blue = np.array([90, 150, 50]) 
     upper_blue = np.array([135, 255, 255])
     blue_mask = cv2.inRange(hsv, lower_blue, upper_blue)
     
-    # 3. Brightness Mask
+    # 3. Brightness Mask (Filtering out dark soil)
     gray = cv2.cvtColor(clean_img, cv2.COLOR_BGR2GRAY)
     _, bright_mask = cv2.threshold(gray, 100, 255, cv2.THRESH_BINARY)
     final_mask = cv2.bitwise_and(blue_mask, bright_mask)
 
-    # 4. Closing Gaps
+    # 4. Morphological Closing (Grouping fragments)
     kernel = np.ones((10, 10), np.uint8)
     final_mask = cv2.morphologyEx(final_mask, cv2.MORPH_CLOSE, kernel)
 
@@ -36,7 +36,6 @@ def detect_microplastics(image_path, result_folder):
             count += 1
             x, y, w, h = cv2.boundingRect(cnt)
             
-            # Store data for each particle
             particles_data.append({
                 "id": count,
                 "area_px": round(area, 2),
