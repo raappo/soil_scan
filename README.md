@@ -50,7 +50,7 @@ soil_scan/
 🚀 Installation & Setup
 
 **Prerequisites**
-- Fedora 43 or any modern Linux distribution
+- linux or windows 
 - Python 3.10+
 - Node.js 20+ & npm
 
